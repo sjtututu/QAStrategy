@@ -19,14 +19,15 @@ class CCI(QAStrategyCTABase):
                 self.send_order('BUY', 'OPEN', price=bar['close'], volume=1)
 
             if self.positions.volume_short > 0:
-                self.send_order('SELL', 'CLOSE', price=bar['close'], volume=1)
+                self.send_order('BUY', 'CLOSE', price=bar['close'], volume=1)
 
-        elif res.CCI[-1] > 100:
+        else:
             print('SHORT')
             if self.positions.volume_short == 0:
                 self.send_order('SELL', 'OPEN', price=bar['close'], volume=1)
             if self.positions.volume_long > 0:
-                self.send_order('BUY', 'CLOSE', price=bar['close'], volume=1)
+                self.send_order('SELL', 'CLOSE', price=bar['close'], volume=1)
+
 
     def cci(self,):
         return QA.QA_indicator_CCI(self.market_data, 61)
@@ -39,7 +40,8 @@ class CCI(QAStrategyCTABase):
 if __name__ == '__main__':
 
     strategy = CCI(code='RB2001', frequence='1min',
-                   strategy_id='a3916de0-bd28-4b9c-bea1-94d91f1744ac')
+                   strategy_id='a3916de0-bd28-4b9c-bea1-94d91f1744ac', start='2019-10-01', end='2019-11-01') 
+
     """测试  一般在jupyter中用
 
     
@@ -58,7 +60,7 @@ if __name__ == '__main__':
     """ 模拟
     """
     strategy = CCI(code='rb2001', frequence='1min',
-                   strategy_id='a3916de0-bd28-4b9c-bea1-94d91f1744ac', send_wx=True)
+                   strategy_id='a3916de0-bd28-4b9c-bea1-94d91f1744ac', send_wx=True,)
     strategy.debug_sim()
     strategy.add_subscriber("你的wechatid 在QARPO中获取")
 
@@ -66,3 +68,4 @@ if __name__ == '__main__':
     
     在进程中 用run_sim
     """
+
